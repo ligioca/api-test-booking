@@ -2,7 +2,9 @@ package models;
 
 import java.util.List;
 
-public class BookingResult {
+public class AllBookings {
+
+    private List<Booking> bookings;
 
     public List<Booking> getBookings() {
         return bookings;
@@ -12,6 +14,5 @@ public class BookingResult {
         this.bookings = bookings;
     }
 
-    private List<Booking> bookings;
 
 }

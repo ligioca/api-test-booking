@@ -1,10 +1,13 @@
 package service_client;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.google.gson.Gson;
 import helper.RetrieveUtil;
 import models.Booking;
-import models.BookingResult;
+import models.BookingDates;
+import models.AllBookings;
+import models.BookingResultFromCreate;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -14,8 +17,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.testng.Assert;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class BookingClient {
 
@@ -23,23 +30,19 @@ public class BookingClient {
         HttpUriRequest request = new HttpGet( "https://automationintesting.online/booking/" );
         HttpResponse response = HttpClientBuilder.create().build().execute( request );
 
-        BookingResult booking = RetrieveUtil.retrieveResourceFromResponse(
-                response, BookingResult.class);
+        AllBookings booking = RetrieveUtil.retrieveResourceFromResponse(
+                response, AllBookings.class);
 
         return booking.getBookings();
     }
 
-//    public Booking getBookingByRoomId() throws IOException {
-//
-//    }
-
     public Booking getBookingByRoomIdAndBookingId(int bookingId, int roomId) throws IOException {
         Booking booking = new Booking();
-        HttpUriRequest request = new HttpGet("https://automationintesting.online/booking/?roomid=" + roomId);
+        HttpUriRequest request = new HttpGet("https://automationintesting.online/booking?roomid=" + roomId);
         HttpResponse response = HttpClientBuilder.create().build().execute(request);
 
-        BookingResult bookings = RetrieveUtil.retrieveResourceFromResponse(
-                response, BookingResult.class);
+        AllBookings bookings = RetrieveUtil.retrieveResourceFromResponse(
+                response, AllBookings.class);
 
         for (Booking i : bookings.getBookings()) {
             if (i.getBookingid() == bookingId) {
@@ -51,30 +54,51 @@ public class BookingClient {
 
 
     public Booking createBookingForSpecificRoom(int roomId) throws IOException {
+        String checkin = "2019-12-07";
+        String checkout = "2019-12-08";
 
-        String payload = "{ \"bookingdates\": {" +
-                "\"checkin\": \"2019-11-07\", " +
-                "\"checkout\": \"2019-11-09\" }, " +
-                "\"bookingid\": 7779," +
-                "\"depositpaid\": true," +
-                "\"email\": \"test@gmail.com\"," +
-                "\"firstname\": \"666\"," +
-                "\"lastname\": \"777\"," +
-                "\"roomid\": " + roomId +
-                "}";
+        Gson gson = new Gson();
+        BookingDates bookingDates = new BookingDates(checkin,checkout);
+        Booking bookingPayload = new Booking(roomId,"FirstName","LastName",true, bookingDates);
+        String json = gson.toJson(bookingPayload);
 
         StringEntity entity = new StringEntity(
-                payload,
+                json,
                 ContentType.APPLICATION_JSON);
 
         HttpPost request = new HttpPost("https://automationintesting.online/booking/");
         request.setEntity(entity);
         HttpResponse response = HttpClientBuilder.create().build().execute(request);
-        Booking booking = RetrieveUtil.retrieveResourceFromResponse(
-                response, Booking.class);
+        BookingResultFromCreate booking = RetrieveUtil.retrieveResourceFromResponse(
+                response, BookingResultFromCreate.class);
         Assert.assertEquals(response.getStatusLine().getStatusCode(),201);
 
-        return new Booking();
+        return booking.getBooking();
+    }
+
+    public Booking createBookingForAnyRoom() throws IOException {
+        Random random = new Random();
+        String checkin = "2019-12-" + random.nextInt(29);
+        String checkout = "2019-12-30";
+        int roomId = random.nextInt(99);
+        Gson gson = new Gson();
+        BookingDates bookingDates = new BookingDates(checkin,checkout);
+        Booking bookingPayload = new Booking(roomId,"FirstName","LastName",true, bookingDates);
+        String json = gson.toJson(bookingPayload);
+
+        StringEntity entity = new StringEntity(
+                json,
+                ContentType.APPLICATION_JSON);
+
+        HttpPost request = new HttpPost("https://automationintesting.online/booking/");
+        request.setEntity(entity);
+        HttpResponse response = HttpClientBuilder.create().build().execute(request);
+        BookingResultFromCreate booking = RetrieveUtil.retrieveResourceFromResponse(
+                response, BookingResultFromCreate.class);
+
+        Assert.assertEquals(response.getStatusLine().getStatusCode(),201);
+
+        return booking.getBooking();
     }
 
 }
