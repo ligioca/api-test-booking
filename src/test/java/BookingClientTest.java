@@ -22,9 +22,9 @@ public class BookingClientTest {
 
     @Test
     public void testGetBookingReturnCorrectInformation() throws IOException {
-        LocalDate checking = RandomDates.createRandomDate(2019,2020);
+        LocalDate checking = RandomDates.createRandomDate(2019,2022);
         BookingDates bookingDates = new BookingDates(checking, checking.plusDays(1));
-        Booking booking = new Booking(new Random().nextInt(50), "FirstName", "LastName", true, bookingDates);
+        Booking booking = new Booking(new Random().nextInt(70), "FirstName", "LastName", true, bookingDates);
 
         BookingClient bookingClient = new BookingClient();
         Booking firstBooking = bookingClient.createBooking(booking);
@@ -41,9 +41,9 @@ public class BookingClientTest {
 
     @Test
     public void testThatBookingsCanBeCreated() throws IOException {
-        LocalDate checking = RandomDates.createRandomDate(2019,2020);
+        LocalDate checking = RandomDates.createRandomDate(2019,2022);
         BookingDates bookingDates = new BookingDates(checking, checking.plusDays(1));
-        Booking booking = new Booking(new Random().nextInt(50), "FirstName", "LastName", true, bookingDates);
+        Booking booking = new Booking(new Random().nextInt(70), "FirstName", "LastName", true, bookingDates);
 
         BookingClient bookingClient = new BookingClient();
         Booking firstBooking = bookingClient.createBooking(booking);
