@@ -33,5 +33,7 @@ The code is in **Java** and **TestNG** for tests.
 - A room cannot be booked more than once for a given date.
 
 2) https://automationintesting.online/booking/swagger-ui.html#/booking-controller contains an extra "/" in the end of URL as you can see bellow: 
-curl -X GET "https://automationintesting.online/booking/?roomid=1" -H "accept: */*"
+
+   curl -X GET "https://automationintesting.online/booking/?roomid=1" -H "accept: */*"
+
 Should it be like this? 
