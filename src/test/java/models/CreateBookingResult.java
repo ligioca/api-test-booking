@@ -1,5 +1,6 @@
 package models;
 
+// TODO Renomear para CreateBookingResult
 public class BookingResultFromCreate {
 
     private int bookingid;
