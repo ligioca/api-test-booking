@@ -10,8 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
-// TODO renomear para BookingClientTest
-public class BookingTestClient {
+public class BookingClientTest {
 
     @Test
     public void testGetBookingsShouldReturnAtLeastTwoExistingBookings() throws IOException {

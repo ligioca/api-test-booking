@@ -1,7 +1,6 @@
 package models;
 
-// TODO Renomear para CreateBookingResult
-public class BookingResultFromCreate {
+public class CreateBookingResult {
 
     private int bookingid;
     private Booking booking;

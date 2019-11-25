@@ -1,17 +1,15 @@
 package models;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
 
 public class BookingDates {
 
     public String checkin;
     public String checkout;
 
-    public BookingDates(String checkin, String checkout) {
-        this.checkin = checkin;
-        this.checkout = checkout;
+    public BookingDates(LocalDate checkin, LocalDate checkout) {
+        this.checkin = checkin.toString();
+        this.checkout = checkout.toString();
     }
 
     public BookingDates() {
