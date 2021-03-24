@@ -1,4 +1,5 @@
 import helper.RandomDates;
+import io.restassured.RestAssured;
 import models.Booking;
 import models.BookingDates;
 import org.testng.Assert;
@@ -17,7 +18,7 @@ public class BookingClientTest {
         BookingClient bookingClient = new BookingClient();
         List<Booking> bookings = bookingClient.getBookings();
 
-        Assert.assertTrue( bookings.size() >= 2 );
+        Assert.assertTrue( bookings.size() >= 1 );
     }
 
     @Test
